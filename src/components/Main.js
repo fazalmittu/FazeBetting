@@ -54,6 +54,7 @@ class Main extends Component {
             console.log(name)
             console.log(team1)
             console.log(betAmount)
+            console.log(window.web3.utils.toWei("3.4", 'Ether'))
             }}>
             <div className="form-group mr-sm-2">
                 <input
@@ -84,11 +85,6 @@ class Main extends Component {
                 id="team1"
                 type="text"
                 min="0"
-                onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                    }
-                }}
                 ref={(input1) => { this.betAmount = input1 }}
                 className="form-control"
                 placeholder="Bet Amount in Ether"

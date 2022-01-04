@@ -102,7 +102,7 @@ contract bet is ATM, Ownable {
                     console.log(receiver);
                     div = (bets[i].amount * (10000 + (teams[1].totalBetAmount * 10000 / teams[0].totalBetAmount))) / 10000;
 
-                    (bool sent, bytes memory data) = receiver.call{ value: div - 200000000000000000 }("");
+                    (bool sent, bytes memory data) = receiver.call{ value: div }("");
                     require(sent, "Failed to send Ether");
                     
                 }
@@ -115,7 +115,7 @@ contract bet is ATM, Ownable {
                     console.log(getTotalBetAmount(0));
                     console.log(div);
 
-                    (bool sent, bytes memory data) = receiver.call{ value: div - 200000000000000000 }("");
+                    (bool sent, bytes memory data) = receiver.call{ value: div }("");
                     require(sent, "Failed to send Ether");
                 }
             }
