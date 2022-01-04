@@ -31,25 +31,28 @@ class App extends Component {
 
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
+    console.log(this.account)
 
     const networkId = await web3.eth.net.getId()
     const networkData = bet.networks[networkId]
     if (networkData) {
       const Bet = web3.eth.Contract(bet.abi, networkData.address)
+      console.log(networkData.address)
       this.setState({ Bet })
-      const totalBets = await Bet.methods.totalBetMoney().call()
-      const team1Bets = await Bet.methods.getTotalBetAmount("0").call()
-      const team2Bets = await Bet.methods.getTotalBetAmount("1").call()
-      console.log(totalBets.toString())
-      console.log(team1Bets.toString())
-      console.log(team2Bets.toString())
+      // const owner = await Bet.methods.owna().call()
+      // const totalBets = await Bet.methods.totalBetMoney().call()
+      // const team1Bets = await Bet.methods.getTotalBetAmount("0").call()
+      // const team2Bets = await Bet.methods.getTotalBetAmount("1").call()
+      // console.log(owner.toString())
+      // console.log(totalBets.toString())
+      // console.log(team1Bets.toString())
+      // console.log(team2Bets.toString())
 
       this.setState({ loading: false })
-      
+
     } else {
       window.alert("Bet contract not deployed to detected network")
     }
-
 
   }
 
