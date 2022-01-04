@@ -31,7 +31,6 @@ class App extends Component {
 
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
-    console.log(this.account)
 
     const networkId = await web3.eth.net.getId()
     const networkData = bet.networks[networkId]
@@ -40,11 +39,11 @@ class App extends Component {
       console.log(networkData.address)
       this.setState({ Bet })
       // const owner = await Bet.methods.owna().call()
-      // const totalBets = await Bet.methods.totalBetMoney().call()
+      const totalBets = await Bet.methods.totalBetMoney().call()
       // const team1Bets = await Bet.methods.getTotalBetAmount("0").call()
       // const team2Bets = await Bet.methods.getTotalBetAmount("1").call()
       // console.log(owner.toString())
-      // console.log(totalBets.toString())
+      console.log(totalBets.toString())
       // console.log(team1Bets.toString())
       // console.log(team2Bets.toString())
 
@@ -71,9 +70,10 @@ class App extends Component {
 
   async teamWinDistribution(teamId) {
     this.setState({ loading: true })
-    const totalBets = await this.state.Bet.methods.totalBetMoney().call()
+    var totalBets = await this.state.Bet.methods.totalBetMoney().call()
+    totalBets = Number(totalBets) + Number(1000000000000000000)
 
-    this.state.Bet.methods.teamWinDistribution(teamId).send( { from: this.state.account, value: window.web3.utils.toBN(totalBets) })
+    this.state.Bet.methods.teamWinDistribution(teamId).send( { from: this.state.account, value: window.web3.utils.toBN(totalBets)})
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
@@ -81,7 +81,7 @@ class App extends Component {
 
   createBet(name, teamId, betAmount) {
     this.setState({ loading: true })
-    this.state.Bet.methods.createBet(name, teamId).send( { from: this.state.account, value: betAmount })
+    this.state.Bet.methods.createBet(name, teamId).send( { from: this.state.account, value: betAmount})
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
