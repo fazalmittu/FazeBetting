@@ -6,8 +6,6 @@ import "./console.sol";
 
 contract bet is ATM, Ownable {
 
-    // using SafeMath for uint256;
-
     event NewBet(
         address addy, 
         uint amount, 
@@ -32,11 +30,11 @@ contract bet is ATM, Ownable {
     address payable conOwner;
     uint public totalBetMoney = 0;
 
-    mapping (address => uint) public numBetsAddress; //made to ensure person can only bet once
+    mapping (address => uint) public numBetsAddress;
 
 
     constructor() payable {
-        conOwner = payable(msg.sender); // setting the contract creator
+        conOwner = payable(msg.sender);
         teams.push(Team("team1", 0));
         teams.push(Team("team2", 0));
 
@@ -117,6 +115,5 @@ contract bet is ATM, Ownable {
         }
 
     }
-
 
 }
