@@ -3,8 +3,6 @@ pragma solidity 0.8.11;
 import "./ownable.sol";
 import "./ATM.sol";
 import "./console.sol";
-// import "./sendEther.sol";
-// import "./safemath.sol";
 
 contract bet is ATM, Ownable {
 
@@ -31,28 +29,17 @@ contract bet is ATM, Ownable {
     Bet[] public bets;
     Team[] public teams;
     
-    address public owna;
     address payable conOwner;
-    uint public ownerBalance;
     uint public totalBetMoney = 0;
-
-    constructor() payable {
-        conOwner = payable(msg.sender); // setting the contract creator
-        owna = msg.sender;
-        ownerBalance = msg.sender.balance;
-        teams.push(Team("team1", 0));
-        teams.push(Team("team2", 0));
-
-    }
 
     mapping (address => uint) public numBetsAddress; //made to ensure person can only bet once
 
-    function getOwner() public view returns (address) {
-        return conOwner;
-    }
 
-    function getOriginalBal() public view returns (uint256) {
-        return conOwner.balance;
+    constructor() payable {
+        conOwner = payable(msg.sender); // setting the contract creator
+        teams.push(Team("team1", 0));
+        teams.push(Team("team2", 0));
+
     }
 
     function createTeam (string memory _name) public {
@@ -90,7 +77,7 @@ contract bet is ATM, Ownable {
 
     }
 
-    function teamWinDistribution(uint _teamId) external payable onlyOwner() {
+    function teamWinDistribution(uint _teamId) public payable onlyOwner() {
         
         deposit();
         uint div;
@@ -100,7 +87,7 @@ contract bet is ATM, Ownable {
                 if (keccak256(abi.encodePacked((bets[i].teamBet.name))) == keccak256(abi.encodePacked("team1"))) {
                     address payable receiver = payable(bets[i].addy);
                     console.log(receiver);
-                    div = (bets[i].amount * (10000 + (teams[1].totalBetAmount * 10000 / teams[0].totalBetAmount))) / 10000;
+                    div = (bets[i].amount * (10000 + (getTotalBetAmount(1) * 10000 / getTotalBetAmount(0)))) / 10000;
 
                     (bool sent, bytes memory data) = receiver.call{ value: div }("");
                     require(sent, "Failed to send Ether");
@@ -111,7 +98,7 @@ contract bet is ATM, Ownable {
             for (uint i = 0; i < bets.length; i++) {
                 if (keccak256(abi.encodePacked((bets[i].teamBet.name))) == keccak256(abi.encodePacked("team2"))) {
                     address payable receiver = payable(bets[i].addy);
-                    div = (bets[i].amount * (10000 + (teams[0].totalBetAmount * 10000 / teams[1].totalBetAmount))) / 10000;
+                    div = (bets[i].amount * (10000 + (getTotalBetAmount(0) * 10000 / getTotalBetAmount(1)))) / 10000;
                     console.log(getTotalBetAmount(0));
                     console.log(div);
 
